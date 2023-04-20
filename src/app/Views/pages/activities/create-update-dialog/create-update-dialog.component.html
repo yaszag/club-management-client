@@ -1,0 +1,35 @@
+<h1 mat-dialog-title>{{ data ? "Add" : "Update" }} Activity</h1>
+<div mat-dialog-content>
+  <form [formGroup]="activityForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="activityForm.get('name')?.hasError('required')">
+        Name is required.
+      </mat-error>
+      <mat-error *ngIf="activityForm.get('name')?.hasError('minlength')">
+        Name must be at least 3 characters long.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description" />
+      <mat-error *ngIf="activityForm.get('description')?.hasError('required')">
+        Description is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput type="number" min="0" formControlName="price" />
+      <mat-error *ngIf="activityForm.get('price')?.hasError('required')">
+        Price is required.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onDismiss()">Close</button>
+  <button mat-button cdkFocusInitial (click)="onConfirm()">Ok</button>
+</div>
