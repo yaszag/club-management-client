@@ -15,6 +15,43 @@
       <mat-label>Phone</mat-label>
       <input matInput formControlName="phone" />
     </mat-form-field>
+    <mat-form-field class="col-12">
+      <mat-select
+        multiple
+        formControlName="activityIds"
+        placeholder="Activities"
+      >
+        <mat-option
+          *ngFor="let activity of activities$ | async"
+          [value]="activity.id"
+        >
+          {{ activity.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Start Date</mat-label>
+      <input formControlName="startDate" matInput [matDatepicker]="picker" />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="col-12">
+      <mat-select
+        formControlName="subscriptionDetails"
+        placeholder="Subscription Type"
+      >
+        <mat-option
+          *ngFor="let subscription of subscriptions$ | async"
+          [value]="subscription"
+        >
+          {{ subscription.designation }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>

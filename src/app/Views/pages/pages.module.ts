@@ -27,6 +27,10 @@ import { CreateUpdateActivityDialogComponent } from './activities/create-update-
 import { CreateUpdateMemberDialogComponent } from './members/create-update-dialog/create-update-dialog.component';
 import { CreateUpdateEquipementDialogComponent } from './equipements/create-update-dialog/create-update-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatListModule} from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -59,6 +63,14 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatToolbarModule,
     MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatGridListModule,
+    MatListModule
+
+  ],
+  providers: [  
+    MatDatepickerModule,  
   ],
 })
 export class PagesModule {}

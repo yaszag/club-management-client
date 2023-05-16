@@ -31,14 +31,14 @@
       <!-- <td mat-cell *matCellDef="let element">
           <button mat-raised-button>Edit</button>
         </td> -->
-      <mat-cell *matCellDef="let row">
+      <td  mat-cell *matCellDef="let row">
         <button mat-icon-button (click)="openAddUpdateDialog(row)">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button (click)="openConfirmDialog(row)">
           <mat-icon color="warn">delete</mat-icon>
         </button>
-      </mat-cell>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
