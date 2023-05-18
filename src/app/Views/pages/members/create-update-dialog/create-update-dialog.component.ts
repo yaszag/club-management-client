@@ -12,9 +12,9 @@ import { SubscriptionService } from 'src/app/Views/core/services/subsciption.ser
   styleUrls: ['./create-update-dialog.component.scss'],
 })
 export class CreateUpdateMemberDialogComponent implements OnInit {
-  memberForm: FormGroup;
-  activities$: Observable<any>;
-  subscriptions$: Observable<any>;
+  memberForm!: FormGroup;
+  activities$!: Observable<any>;
+  subscriptions$!: Observable<any>;
 
   constructor(
     public dialogRef: MatDialogRef<CreateUpdateMemberDialogComponent>,
@@ -34,13 +34,15 @@ export class CreateUpdateMemberDialogComponent implements OnInit {
   }
 
   initializeMemberForm(): void {
+    console.log(this.data?.subscription.subscriptionDetails);
+
     this.memberForm = this.fb.group({
       email: [this.data?.email || ''],
       name: [this.data?.name || ''],
       phone: [this.data?.phone || ''],
-      activityIds: [],
-      startDate: [Date.now()],
-      subscriptionDetails: [],
+      activityIds: [this.data?.activities.map((activity: { id: any; })=> activity.id) || ''],
+      startDate: [this.data?.subscription.startDate || Date.now()],
+      subscriptionDetails: [this.data?.subscription.subscriptionDetails || ''],
     });
   }
   onDismiss(): void {
@@ -66,6 +68,10 @@ export class CreateUpdateMemberDialogComponent implements OnInit {
     const updateMemberModel = {
       id: this.data.id,
       ...this.memberForm.value,
+      subscriptionDTO: {
+        startDate: this.memberForm.get('startDate')?.value,
+        subscriptionDetails: this.memberForm.get('subscriptionDetails')?.value,
+      },
     };
     this._memberService
       .updateMember(this.data.id, updateMemberModel)

@@ -1,11 +1,42 @@
-<mat-grid-list cols="3" rowHeight="200px">
-  <mat-grid-tile >
-    <mat-card>
-      <mat-card-content>
-        <mat-icon>{{ 'widget.icon' }}</mat-icon>
-        <h3>{{ 'widget.title' }}</h3>
-        <p>{{' widget.value' }}</p>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<div
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="20px"
+  class="stats-cards"
+>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="Total Users"
+      total="{{memberes.length}}"
+      percentage="50"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="Users retention"
+      total="10k"
+      percentage="40"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="Users engagement"
+      total="8k"
+      percentage="30"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="Income"
+      total=" {{calculateTotalPrice()}} TND"
+      percentage="20"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+</div>
+<ng-container *ngIf="memberes.length > 0">
+  <app-widget-area [data]="memberes"></app-widget-area>
+</ng-container>

@@ -1,0 +1,18 @@
+.filter-container {
+  margin-top: 1em;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-input {
+  margin-right: 10px;
+}
+
+.active-row {
+  background-color: #deffd5;
+}
+
+.non-active-row {
+  background-color: #ffd5d5;
+}

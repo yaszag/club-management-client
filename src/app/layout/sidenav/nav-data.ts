@@ -5,6 +5,11 @@ export const navbarData = [
     label: 'Dashboard',
   },
   {
+    routeLink: 'members',
+    icon: 'fal fa-users',
+    label: 'Members',
+  },
+  {
     routeLink: 'activities',
     icon: 'fal fa-chart-network',
     label: 'Activities',
@@ -14,11 +19,7 @@ export const navbarData = [
     icon: 'fal fa-user-tie',
     label: 'Coaches',
   },
-  {
-    routeLink: 'members',
-    icon: 'fal fa-users',
-    label: 'Members',
-  },
+
   {
     routeLink: 'equipments',
     icon: 'fal fa-staff',

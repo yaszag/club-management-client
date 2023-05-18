@@ -8,6 +8,7 @@ import {
 } from '../../components/confirm-dialog/confirm-dialog.component';
 import { MemberService } from '../../core/services/member.service';
 import { CreateUpdateMemberDialogComponent } from './create-update-dialog/create-update-dialog.component';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-members',
@@ -19,11 +20,16 @@ export class MembersComponent implements OnInit {
     'name',
     'email',
     'phone',
+    'activities',
+    'subscribtion',
+    'endDate',
     'actions',
   ];
   dataSource = new MatTableDataSource<any>();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort)
+  sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(
     private _membersService: MemberService,
     public dialog: MatDialog
@@ -31,6 +37,7 @@ export class MembersComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
   ngOnInit(): void {
     this._membersService.getAllMemberes();
@@ -53,24 +60,58 @@ export class MembersComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
-      dialogResult ? this.deleteCoach(member.id) : null;
+      dialogResult ? this.deleteMember(member.id) : null;
     });
   }
-  openAddUpdateDialog(coach: any): void {
+  openAddUpdateDialog(member: any): void {
     const dialogRef = this.dialog.open(CreateUpdateMemberDialogComponent, {
       maxWidth: '400px',
-      data: coach,
+      data: member,
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
       this._membersService.getAllMemberes();
     });
   }
+  applyFilter(filterValues: any) {
+    this.filterData();
+    this.dataSource.filter = filterValues;
+  }
 
-  deleteCoach(coachId: string): void {
-    this._membersService.deleteMember(coachId).subscribe(
+  deleteMember(memberId: string): void {
+    this._membersService.deleteMember(memberId).subscribe(
       () => this._membersService.getAllMemberes(),
       (e) => this._membersService.getAllMemberes()
     );
+  }
+
+  filterData(): void {
+    this.dataSource.filterPredicate = ((data: any, filter) => {
+      const name = !filter.name || data.name.includes(filter.name);
+      const activities =
+        !filter.activityId ||
+        data.activities.some(
+          (activity: { id: any }) => activity.id == filter.activityId
+        );
+      const subscribtion =
+        !filter.subscribtion ||
+        data.subscription.subscriptionDetails.id == filter.subscribtion;
+      const status =
+        !filter.status ||
+        this.getUserStatus(data.subscription.endDate) == filter.status;
+
+      return name && activities && subscribtion && status;
+    }) as (PeriodicElement: any, string: any) => boolean;
+  }
+
+  private getUserStatus(endDate: string): number {
+    const today = new Date();
+    const end = new Date(endDate);
+    return end > today ? 1 : 2;
+  }
+
+  getRowClass(row: any): string {
+    const status = this.getUserStatus(row.subscription.endDate);
+    return status === 1 ? 'active-row' : 'non-active-row';
   }
 }
