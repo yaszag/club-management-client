@@ -1,27 +1,58 @@
-# club management systeme
+# Club Sport Management Application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0.
+Welcome to the Club Sport Management Application! This application is designed to help you efficiently manage your club's activities, members, coaches, equipment, and more. It provides various features such as authentication, member management, coach management, equipment management, activity management, and a comprehensive dashboard for tracking important statistics.
 
-## Development server
+## Screenshots
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Here are some screenshots showcasing different parts of the application:
 
-## Code scaffolding
+### Authentication
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![Authentication](screenshots/login.png)
 
-## Build
+### Dashboard
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+![Dashboard](screenshots/dashboard.png)
 
-## Running unit tests
+### Member Management
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+![Member Management](screenshots/members.png)
+![Member Management](screenshots/member-filter.png)
 
-## Running end-to-end tests
+### Coach Management
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+![Coach Management](screenshots/add_coach.png)
 
-## Further help
+### Equipment Management
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+![Equipment Management](screenshots/equipments.png)
+
+### Activity Management
+
+![Activity Management](screenshots/activities.png)
+
+
+
+## Features
+
+- **Authentication:** Secure user authentication and authorization system to ensure only authorized individuals can access the application.
+- **Member Management:** CRUD operations for managing club members. Ability to add and update subscription details for members. Additionally, it offers the ability to filter members based on specific criteria.
+- **Coach Management:** CRUD operations for managing coaches within the club.
+- **Equipment Management:** CRUD operations for managing club equipment.
+- **Activity Management:** CRUD operations for managing club activities.
+- **Dashboard:** Provides detailed statistics on subscription categories, income, and member statistics. Offers filtering options for daily, weekly, monthly, and yearly views.
+
+## Getting Started
+
+To get started with the Club Sport Management Application, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/your-username/club-sport-management.git`
+2. Install the required dependencies: `npm install`
+3. Build the application: `ng build`
+4. Start the application: `ng serve`
+5. Open your web browser and navigate to `http://localhost:4200`
+
+Please note that you will need to have Angular CLI installed on your system to run this application.
+
+
+

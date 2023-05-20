@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { skip } from 'rxjs';
+import { skip, Observable } from 'rxjs';
 import { MemberService } from '../../core/services/member.service';
+import { getWeekNumber } from '../../core/helpers/week-number.helper';
+import { CoachService } from '../../core/services/coach.service';
+import { DashboardService } from '../../core/services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,89 +12,49 @@ import { MemberService } from '../../core/services/member.service';
 })
 export class DashboardComponent implements OnInit {
   cards = [5, 4, 3, 30];
-  memberes: any = [];
-  constructor(public _membersService: MemberService) {}
+  memberes: any[] = [];
+  choaches$!: Observable<any[]>;
+  totalMembers: number = 0;
+  totalPrice: number = 0;
+  selectedPeriod: 'all' | 'daily' | 'weekly' | 'monthly' | 'yearly' = 'all';
+
+  constructor(
+    public _membersService: MemberService,
+    public _coachesService: CoachService,
+    private _dashboardService: DashboardService
+  ) {}
 
   ngOnInit(): void {
     this._membersService.getAllMemberes();
+    this._coachesService.getAllCoaches();
+    this.choaches$ = this._coachesService.coaches$;
     this._membersService.memberes$.pipe(skip(1)).subscribe((memberes) => {
       this.memberes = memberes;
-      const period = 'monthly'; // Change the period as per your requirement
-
-      const totalPrice = this.calculateTotalPriceh(memberes, period);
-      console.log('Total Price:', totalPrice);
+      this.getAlltotalPrice(memberes);
     });
-
-   
   }
-  calculateTotalPrice(): number {
-    const totalPrice = this.memberes.reduce((accumulator: any, entry: any) => {
-      const subscriptionPrice = entry.subscription.subscriptionDetails.price;
-      return accumulator + subscriptionPrice;
-    }, 0);
-
-    return totalPrice;
+  getAlltotalPrice(memberes: any[]): void {
+    this.selectedPeriod = 'all';
+    this.totalMembers = memberes.length;
+    this.totalPrice = this._dashboardService.getAlltotalPrice(memberes);
   }
 
-  // Define the Angular method to calculate the total price
-  calculateTotalPriceh(entries: any[], period: 'daily' | 'weekly' | 'monthly' | 'yearly'): number {
-    const currentDate = new Date();
-    const currentDay = currentDate.getDate(); // Current day of the month
-    const currentWeek = this.getWeekNumber(currentDate); // Current week number
-    const currentMonth = currentDate.getMonth(); // Month index starts from 0 (0 - 11)
-    const currentYear = currentDate.getFullYear();
-  
-    const totalPrice = entries.reduce((accumulator, entry) => {
-      const { startDate, subscriptionDetails } = entry.subscription;
-      const subscriptionStart = new Date(startDate);
-      const subscriptionStartDay = subscriptionStart.getDate(); // Start day of the month
-      const subscriptionStartWeek = this.getWeekNumber(subscriptionStart); // Start week number
-      const subscriptionStartMonth = subscriptionStart.getMonth(); // Month index starts from 0 (0 - 11)
-      const subscriptionStartYear = subscriptionStart.getFullYear();
-  
-      const isSameYear = currentYear === subscriptionStartYear;
-      const isSameMonth = isSameYear && currentMonth === subscriptionStartMonth;
-  
-      switch (period) {
-        case 'daily':
-          if (isSameMonth && currentDay === subscriptionStartDay) {
-            return accumulator + subscriptionDetails.price;
-          }
-          break;
-        case 'weekly':
-          if (isSameMonth && currentWeek === subscriptionStartWeek) {
-            return accumulator + subscriptionDetails.price;
-          }
-          break;
-        case 'monthly':
-          if (isSameMonth) {
-            return accumulator + subscriptionDetails.price;
-          }
-          break;
-        case 'yearly':
-          if (isSameYear) {
-            return accumulator + subscriptionDetails.price;
-          }
-          break;
-      }
-  
-      return accumulator;
-    }, 0);
-  
-    return totalPrice;
-  }
-  
+  calculateTotalByPeriode(
+    entries: any[],
+    period: 'daily' | 'weekly' | 'monthly' | 'yearly'
+  ): void {
+    this.selectedPeriod = period;
 
-  // Helper method to get the week number of a given date
-  getWeekNumber(date: Date): number {
-    const target = new Date(date.valueOf());
-    const dayNr = (date.getDay() + 6) % 7;
-    target.setDate(target.getDate() - dayNr + 3);
-    const firstThursday = target.valueOf();
-    target.setMonth(0, 1);
-    if (target.getDay() !== 4) {
-      target.setMonth(0, 1 + ((4 - target.getDay() + 7) % 7));
-    }
-    return 1 + Math.ceil((firstThursday - target.getTime()) / 604800000);
+    this.totalMembers = this._dashboardService.calculateTotalByPeriode(
+      entries,
+      period,
+      'member'
+    );
+
+    this.totalPrice = this._dashboardService.calculateTotalByPeriode(
+      entries,
+      period,
+      'price'
+    );
   }
 }

@@ -5,6 +5,7 @@ import { MemberService } from 'src/app/Views/core/services/member.service';
 import { ActivityService } from 'src/app/Views/core/services/activity.service';
 import { Observable } from 'rxjs';
 import { SubscriptionService } from 'src/app/Views/core/services/subsciption.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-update-dialog',
@@ -22,7 +23,8 @@ export class CreateUpdateMemberDialogComponent implements OnInit {
     private fb: FormBuilder,
     private _memberService: MemberService,
     private _activitiesService: ActivityService,
-    private _subscriptionService: SubscriptionService
+    private _subscriptionService: SubscriptionService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -34,13 +36,13 @@ export class CreateUpdateMemberDialogComponent implements OnInit {
   }
 
   initializeMemberForm(): void {
-    console.log(this.data?.subscription.subscriptionDetails);
-
     this.memberForm = this.fb.group({
       email: [this.data?.email || ''],
       name: [this.data?.name || ''],
       phone: [this.data?.phone || ''],
-      activityIds: [this.data?.activities.map((activity: { id: any; })=> activity.id) || ''],
+      activityIds: [
+        this.data?.activities.map((activity: { id: any }) => activity.id) || [],
+      ],
       startDate: [this.data?.subscription.startDate || Date.now()],
       subscriptionDetails: [this.data?.subscription.subscriptionDetails || ''],
     });
@@ -60,9 +62,15 @@ export class CreateUpdateMemberDialogComponent implements OnInit {
         subscriptionDetails: this.memberForm.get('subscriptionDetails')?.value,
       },
     };
-    this._memberService.addMember(addMemberModel).subscribe(() => {
-      this.dialogRef.close(false);
-    });
+    this._memberService.addMember(addMemberModel).subscribe(
+      () => {
+        this.dialogRef.close(false);
+        this._snackBar.open('member added successfully', 'OK');
+      },
+      (err) => {
+        this._snackBar.open(err.message, 'OK');
+      }
+    );
   }
   updateMember(): void {
     const updateMemberModel = {
@@ -73,10 +81,15 @@ export class CreateUpdateMemberDialogComponent implements OnInit {
         subscriptionDetails: this.memberForm.get('subscriptionDetails')?.value,
       },
     };
-    this._memberService
-      .updateMember(this.data.id, updateMemberModel)
-      .subscribe(() => {
+    this._memberService.updateMember(this.data.id, updateMemberModel).subscribe(
+      () => {
+        this._snackBar.open('member updated successfully', 'OK');
+
         this.dialogRef.close(false);
-      });
+      },
+      (err) => {
+        this._snackBar.open(err.message, 'OK');
+      }
+    );
   }
 }

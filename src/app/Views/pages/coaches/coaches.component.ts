@@ -24,7 +24,7 @@ export class CoachesComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<any>();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(
     private _coachesService: CoachService,
     public dialog: MatDialog
