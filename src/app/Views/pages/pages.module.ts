@@ -27,6 +27,15 @@ import { CreateUpdateActivityDialogComponent } from './activities/create-update-
 import { CreateUpdateMemberDialogComponent } from './members/create-update-dialog/create-update-dialog.component';
 import { CreateUpdateEquipementDialogComponent } from './equipements/create-update-dialog/create-update-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatListModule } from '@angular/material/list';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { SharedModule } from 'src/app/shared/shared.module';
+import {MatSortModule} from '@angular/material/sort';
+import { FilterContainerComponent } from './members/components/filter-container/filter-container.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +52,7 @@ import { MatSelectModule } from '@angular/material/select';
     CreateUpdateEquipementDialogComponent,
     EquipementsComponent,
     CreateUpdateMemberDialogComponent,
+    FilterContainerComponent,
   ],
   imports: [
     CommonModule,
@@ -59,6 +69,17 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatToolbarModule,
     MatCardModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatGridListModule,
+    MatListModule,
+    HighchartsChartModule,
+    MatIconModule,
+    FlexLayoutModule,
+    SharedModule,
+    MatSortModule
+
   ],
+  providers: [MatDatepickerModule],
 })
 export class PagesModule {}

@@ -20,6 +20,8 @@ import { LoginComponent } from './Views/user/login/login.component';
 import { RegisterComponent } from './Views/user/register/register.component';
 import { AuthInterceptor } from './Views/core/interceptors/auth-interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent],
@@ -39,6 +41,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatToolbarModule,
     MatCardModule,
     MatSnackBarModule,
+    HighchartsChartModule,
   ],
   providers: [
     {

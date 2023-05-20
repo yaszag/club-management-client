@@ -2,7 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivityService } from 'src/app/Views/core/services/activity.service';
-import { markInvalidControls } from 'src/app/Views/core/utils/form.util';
+import { markInvalidControls } from 'src/app/Views/core/helpers/form.helper';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-update-dialog',
@@ -10,12 +11,13 @@ import { markInvalidControls } from 'src/app/Views/core/utils/form.util';
   styleUrls: ['./create-update-dialog.component.scss'],
 })
 export class CreateUpdateActivityDialogComponent implements OnInit {
-  activityForm: FormGroup;
+  activityForm!: FormGroup;
   constructor(
     public dialogRef: MatDialogRef<CreateUpdateActivityDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
-    private _activityService: ActivityService
+    private _activityService: ActivityService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -44,9 +46,15 @@ export class CreateUpdateActivityDialogComponent implements OnInit {
   }
 
   addActivity(): void {
-    this._activityService.addActivity(this.activityForm.value).subscribe(() => {
-      this.dialogRef.close(false);
-    });
+    this._activityService.addActivity(this.activityForm.value).subscribe(
+      () => {
+        this.dialogRef.close(false);
+        this._snackBar.open('activity added successfully', 'OK');
+      },
+      (err) => {
+        this._snackBar.open(err.message, 'OK');
+      }
+    );
   }
   updateActivity(): void {
     const updateActivityModel = {
@@ -55,8 +63,14 @@ export class CreateUpdateActivityDialogComponent implements OnInit {
     };
     this._activityService
       .updateActivity(this.data.id, updateActivityModel)
-      .subscribe(() => {
-        this.dialogRef.close(false);
-      });
+      .subscribe(
+        () => {
+          this.dialogRef.close(false);
+          this._snackBar.open('activity updated successfully', 'OK');
+        },
+        (err) => {
+          this._snackBar.open(err.message, 'OK');
+        }
+      );
   }
 }

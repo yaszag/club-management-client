@@ -1,9 +1,85 @@
-<h1>Dashboard</h1>
-<div class="card">
-  <div class="card-head">Lorem ipsum - dashboard</div>
-  <div class="card-body">
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas ducimus
-    soluta, quasi aut ipsa non, ullam enim rem repudiandae, vitae provident
-    animi. Inventore rerum, voluptas optio dignissimos blanditiis modi illo!
-  </div>
+<div
+  fxLayout="row"
+  fxLayoutAlign="center center"
+  fxLayoutGap="20px"
+  style="margin-bottom: 3em"
+>
+  <button
+    mat-stroked-button
+    [class.selected]="selectedPeriod === 'all'"
+    (click)="getAlltotalPrice(memberes)"
+  >
+    ALL
+  </button>
+  <button
+    mat-stroked-button
+    [class.selected]="selectedPeriod === 'daily'"
+    (click)="calculateTotalByPeriode(memberes, 'daily')"
+  >
+    TODAY
+  </button>
+  <button
+    mat-stroked-button
+    [class.selected]="selectedPeriod === 'weekly'"
+    (click)="calculateTotalByPeriode(memberes, 'weekly')"
+  >
+    THIS WEEK
+  </button>
+
+  <button
+    mat-stroked-button
+    [class.selected]="selectedPeriod === 'monthly'"
+    (click)="calculateTotalByPeriode(memberes, 'monthly')"
+  >
+    THIS MONTH
+  </button>
+  <button
+    mat-stroked-button
+    [class.selected]="selectedPeriod === 'yearly'"
+    (click)="calculateTotalByPeriode(memberes, 'yearly')"
+  >
+    THIS YEAR
+  </button>
 </div>
+<div
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="20px"
+  class="stats-cards"
+>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="Total Members"
+      total="{{ memberes.length }}"
+      percentage="50"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="New Members"
+      total="{{totalMembers}}"
+      percentage="40"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="Income"
+      total=" {{ totalPrice }} TND"
+      percentage="20"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+  <mat-card fxFlex="25">
+    <app-widget-card
+      label="Total Coaches"
+      total="{{ (choaches$ | async)?.length }}"
+      percentage="30"
+      [data]="cards"
+    ></app-widget-card>
+  </mat-card>
+</div>
+<ng-container *ngIf="memberes.length > 0">
+  <app-widget-area [data]="memberes"></app-widget-area>
+</ng-container>

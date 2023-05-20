@@ -4,7 +4,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { ActivityService } from 'src/app/Views/core/services/activity.service';
 import { CoachService } from 'src/app/Views/core/services/coach.service';
-import { markInvalidControls } from 'src/app/Views/core/utils/form.util';
+import { markInvalidControls } from 'src/app/Views/core/helpers/form.helper';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-update-dialog',
@@ -12,14 +13,15 @@ import { markInvalidControls } from 'src/app/Views/core/utils/form.util';
   styleUrls: ['./create-update-dialog.component.scss'],
 })
 export class CreateUpdateCoachDialogComponent implements OnInit {
-  coachForm: FormGroup;
-  activities$: Observable<any>;
+  coachForm!: FormGroup;
+  activities$!: Observable<any>;
   constructor(
     public dialogRef: MatDialogRef<CreateUpdateCoachDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
     private _coachesService: CoachService,
-    private _activitiesService: ActivityService
+    private _activitiesService: ActivityService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +39,8 @@ export class CreateUpdateCoachDialogComponent implements OnInit {
       ],
       phone: [this.data?.phone || '', [Validators.required]],
       specialization: [this.data?.specialization || '', [Validators.required]],
-      activities: [''],
+
+      activities: [this.data?.activities || []],
     });
   }
   onDismiss(): void {
@@ -52,19 +55,29 @@ export class CreateUpdateCoachDialogComponent implements OnInit {
   }
 
   addCoach(): void {
-    this._coachesService.addCoach(this.coachForm.value).subscribe(() => {
-      this.dialogRef.close(false);
-    });
+    this._coachesService.addCoach(this.coachForm.value).subscribe(
+      () => {
+        this.dialogRef.close(false);
+        this._snackBar.open('coach added successfully', 'OK');
+      },
+      (err) => {
+        this._snackBar.open(err.message, 'OK');
+      }
+    );
   }
   updateCoach(): void {
     const updateCoachModel = {
       id: this.data.id,
       ...this.coachForm.value,
     };
-    this._coachesService
-      .updateCoach(this.data.id, updateCoachModel)
-      .subscribe(() => {
+    this._coachesService.updateCoach(this.data.id, updateCoachModel).subscribe(
+      () => {
         this.dialogRef.close(false);
-      });
+        this._snackBar.open('coach updated successfully', 'OK');
+      },
+      (err) => {
+        this._snackBar.open(err.message, 'OK');
+      }
+    );
   }
 }

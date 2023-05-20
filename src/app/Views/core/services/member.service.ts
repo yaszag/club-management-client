@@ -13,6 +13,7 @@ export class MemberService {
       this.http
         .get<any>(`http://localhost:8080/members`)
         .subscribe((res: any[]) => {
+
           this._memberes$.next(res);
           resolve(res);
         });

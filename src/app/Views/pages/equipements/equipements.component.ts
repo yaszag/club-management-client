@@ -18,7 +18,7 @@ export class EquipementsComponent {
   displayedColumns: string[] = ['name', 'description', 'quantity', 'actions'];
   dataSource = new MatTableDataSource<any>();
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(
     private _equipementesService: EquipementService,
     public dialog: MatDialog
