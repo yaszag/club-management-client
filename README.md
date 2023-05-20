@@ -46,7 +46,7 @@ Here are some screenshots showcasing different parts of the application:
 
 To get started with the Club Sport Management Application, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/your-username/club-sport-management.git`
+1. Clone the repository: `git clone https://github.com/yaszag/club-management-client.git`
 2. Install the required dependencies: `npm install`
 3. Build the application: `ng build`
 4. Start the application: `ng serve`
